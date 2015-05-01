@@ -25,15 +25,11 @@ public class Player : MonoBehaviour {
 		
 		gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-		
-		print("Gravity: " + gravity + " Jump Velocity: " + jumpVelocity);
-		
 	}
 	
 	
 	void Update()
 	{
-		
 		if(controller.collisions.above || controller.collisions.below)
 		{
 			velocity.y = 0;
@@ -41,7 +37,7 @@ public class Player : MonoBehaviour {
 		
 		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		
-		if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) && controller.collisions.below)
+		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && controller.collisions.below)
 		{
 			velocity.y = jumpVelocity;
 		}
