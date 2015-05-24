@@ -12,9 +12,11 @@ public class Player : MonoBehaviour {
 
     public float moveSpeed = 8;
 
+    private bool teleporting = false;
+
     float gravity;
     float jumpVelocity;
-    Vector3 velocity;
+    public Vector3 velocity;
     float velocityXSmoothing;
 
     Controller2D controller;
@@ -28,18 +30,24 @@ public class Player : MonoBehaviour {
 
 	}
 	
-
+    
     void Update()
     {
-
-        if(controller.collisions.above || controller.collisions.below)
+        if (!teleporting)
         {
-            velocity.y = 0;
+            if (controller.collisions.above || controller.collisions.below)
+            {
+                velocity.y = 0;
+            }
+        }
+        else
+        {
+            teleporting = false;
         }
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) && controller.collisions.below)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && controller.collisions.below)
         {
             velocity.y = jumpVelocity;
         }
@@ -62,6 +70,13 @@ public class Player : MonoBehaviour {
                 other.GetComponent<DoorScript>().toggleDoor();
             }
         }
+    }
+
+    public void Teleport(Vector2 newPosition, Vector3 newVelocity)
+    {
+        velocity = newVelocity;
+        transform.position = newPosition;
+        teleporting = true;
     }
 }
 
