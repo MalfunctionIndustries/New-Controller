@@ -27,7 +27,6 @@ public class Player : MonoBehaviour {
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-
 	}
 	
     
@@ -74,7 +73,7 @@ public class Player : MonoBehaviour {
 
     public void Teleport(Vector2 newPosition, Vector3 newVelocity)
     {
-        velocity = newVelocity;
+        velocity += newVelocity;
         transform.position = newPosition;
         teleporting = true;
     }

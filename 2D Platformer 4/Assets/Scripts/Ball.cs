@@ -5,6 +5,7 @@ public class Ball : MonoBehaviour {
     
     public Transform player;
     public LayerMask raycastMask;
+    public float throwForce;
 
     public Player playerController;
 
@@ -16,7 +17,7 @@ public class Ball : MonoBehaviour {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-	void Update () {
+	void LateUpdate () {
         if (!thrown)
         {
             transform.position = player.position;
@@ -28,10 +29,10 @@ public class Ball : MonoBehaviour {
                 thrown = true;
                 rigidbody.isKinematic = false;
 
-                Vector2 directionFromPlayer = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.position);
+                Vector2 directionFromPlayer = Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.position;
 
                 directionFromPlayer = directionFromPlayer / directionFromPlayer.magnitude;
-                rigidbody.AddForce(directionFromPlayer * 1000);
+                rigidbody.AddForce(directionFromPlayer * throwForce);
             }
         }
         else
