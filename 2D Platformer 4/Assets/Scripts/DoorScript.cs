@@ -4,6 +4,9 @@ using System.Collections;
 public class DoorScript : MonoBehaviour {
 
     public GameObject door;
+    public Sprite leverOff, leverOn;
+
+    public SpriteRenderer lever;
 
     private bool open = false;
     private Vector2 initialScale;
@@ -18,14 +21,14 @@ public class DoorScript : MonoBehaviour {
 
         if(!open)
         {
+            lever.sprite = leverOn;
             open = true;
-            Debug.Log("OPENED");
             door.transform.localScale = Vector2.zero;
         }
         else
         {
+            lever.sprite = leverOff;
             open = false;
-            Debug.Log("CLOSED");
             door.transform.localScale = initialScale;
         }
 	}

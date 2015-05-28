@@ -11,19 +11,29 @@ public class Ball : MonoBehaviour {
 
     private Rigidbody2D rigidbody;
     private bool thrown = false;
-    
+
+    public AudioSource ThrowAS;
+    public AudioSource TeleAS;
+    public AudioSource CollideAS;
+
+    public AudioClip[] throwBall;
+    public AudioClip[] returnBall;
+    public AudioClip[] teleport;
+    public AudioClip[] collide;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-	void LateUpdate () {
+	void Update () {
+
         if (!thrown)
         {
             transform.position = player.position;
             rigidbody.isKinematic = true;
             //rigidbody.gravityScale = 0;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Fire1"))
             {
                 // throw ball
                 thrown = true;
@@ -33,20 +43,31 @@ public class Ball : MonoBehaviour {
 
                 directionFromPlayer = directionFromPlayer / directionFromPlayer.magnitude;
                 rigidbody.AddForce(directionFromPlayer * throwForce);
+
+                ThrowAS.clip = throwBall[Random.Range(0, throwBall.Length)];
+                ThrowAS.Play();
+
             }
         }
         else
         {
+
             //rigidbody.isKinematic = false;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Fire1"))
             {
                 // return ball to player
                 thrown = false;
+
+                ThrowAS.clip = returnBall[Random.Range(0, throwBall.Length)];
+                ThrowAS.Play();
             }
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetButtonDown("Fire2"))
             {
                 // teleport to ball
                 thrown = false;
+
+                TeleAS.clip = teleport[Random.Range(0, throwBall.Length)];
+                TeleAS.Play();
 
                 Vector2 bottomPoint;
                 Vector2 topPoint;
@@ -97,4 +118,24 @@ public class Ball : MonoBehaviour {
             }
         }
 	}
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "Button")
+        {
+            other.GetComponent<ButtonScript>().Press();
+        }
+    }
+
+    void OnCollisionEnter2D()
+    {
+        CollideAS.clip = collide[Random.Range(0, collide.Length)];
+        CollideAS.Play();
+    }
+
+    public void ResetBall()
+    {
+        thrown = false;
+    }
+
 }
